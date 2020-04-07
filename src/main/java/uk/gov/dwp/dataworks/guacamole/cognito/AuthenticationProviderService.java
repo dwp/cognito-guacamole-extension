@@ -62,13 +62,6 @@ public class AuthenticationProviderService {
         }
     };
 
-    static final StringGuacamoleProperty USERNAME_CLAIMTYPE = new StringGuacamoleProperty() {
-        @Override
-        public String getName() {
-            return "username-claimtype";
-        }
-    };
-
     private String keystoreUrl;
     private Boolean validateIssuer;
     private String clientUsername;
@@ -77,12 +70,9 @@ public class AuthenticationProviderService {
 
     private JwkProvider cognito;
 
-    private final Environment environment;
-
     @Inject
     public AuthenticationProviderService(Environment environment) throws GuacamoleException, MalformedURLException, SigningKeyNotFoundException {
 
-        this.environment = environment;
         keystoreUrl = environment.getRequiredProperty(KEYSTORE_URL);
         validateIssuer = environment.getRequiredProperty(VALIDATE_ISSUER);
         clientParams = environment.getRequiredProperty(CLIENT_PARAMS);
@@ -101,9 +91,8 @@ public class AuthenticationProviderService {
 
         String token = request.getParameter("token");
 
-        logger.debug("Couldnt read token.");
-
         if (token == null) {
+            logger.debug("Couldnt read token.");
             return null;
         }
 
@@ -111,10 +100,9 @@ public class AuthenticationProviderService {
 
         // Decode token.
         DecodedJWT decodedToken = JWT.decode(token);
-        Jwk algo = null;
 
         try {
-            algo = cognito.get(decodedToken.getKeyId());
+            Jwk algo = cognito.get(decodedToken.getKeyId());
             Algorithm algorithm;
             switch(algo.getAlgorithm()) {
                 case "RS256": algorithm = Algorithm.RSA256((RSAPublicKey) algo.getPublicKey(), null);
