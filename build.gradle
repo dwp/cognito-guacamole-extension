@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+group = 'uk.gov.dwp.dataworks.guacamole.cognito'
+version = '1.1.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+description = """ guacamole custom authentication based on an AWS cognito JSON WEB TOKEN """
+
+repositories {
+     mavenCentral()
+}
+
+dependencies {
+    compileOnly(group: 'org.apache.guacamole', name: 'guacamole-ext', version: '1.1.0')
+    compileOnly(group: 'javax.servlet', name: 'servlet-api', version:'2.5')
+    compileOnly(group: 'com.sun.xml.security', name: 'xml-security-impl', version:'1.0')
+    compileOnly(group: 'com.google.inject', name: 'guice', version: '4.2.2')
+    
+    implementation 'com.auth0:java-jwt:3.10.0'
+    implementation 'com.auth0:jwks-rsa:0.11.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.10.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
+
+    testImplementation(group: 'org.apache.guacamole', name: 'guacamole-ext', version: '1.1.0')
+    testImplementation(group: 'javax.servlet', name: 'servlet-api', version:'2.5')
+    testCompileOnly(group: 'com.sun.xml.security', name: 'xml-security-impl', version:'1.0')
+    testImplementation(group: 'com.google.inject.extensions', name: 'guice-testlib', version: '4.2.2')
+    testImplementation(group: 'junit', name: 'junit', version:'4.11')
+    testImplementation 'org.mockito:mockito-core:2.+'
+}

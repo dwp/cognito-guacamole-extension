@@ -1,0 +1,6 @@
+{
+  "guacamoleVersion" : "1.1.0",
+  "name"      : "Cognito Authentication",
+  "namespace" : "guac-cognito",
+  "authProviders" : ["uk.gov.dwp.dataworks.guacamole.cognito.CognitoAuthenticationProvider"]
+}
