@@ -10,7 +10,7 @@
   executors:
     docker-publisher:
       environment:
-        IMAGE_NAME: dwpdigital/emr-cluster-broker
+        IMAGE_NAME: dwpdigital/cognito-guacamole-extension
       docker:
         - image: circleci/buildpack-deps:stretch
 
