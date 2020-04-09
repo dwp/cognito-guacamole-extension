@@ -31,5 +31,5 @@ docker: ## Build docker image
 	cp docker/start.sh tmp
 	cp build/libs/guacamole-auth-cognito-*-all.jar tmp
 	cp src/main/resources/guac-manifest.json tmp
-	docker build -t dwp/cognito-guacamole-extension ./tmp
+	docker build -t dwpdigital/cognito-guacamole-extension ./tmp
 	rm -Rf tmp
