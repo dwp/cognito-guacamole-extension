@@ -16,6 +16,8 @@
 
   jobs:
     build:
+      environment:
+        IMAGE_NAME: dwpdigital/cognito-guacamole-extension
       docker:
         # specify the version you desire here
         - image: circleci/openjdk:8-jdk
