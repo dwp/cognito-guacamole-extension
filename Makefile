@@ -29,6 +29,8 @@ docker: ## Build docker image
 	./gradlew build shadow
 	cp docker/Dockerfile tmp
 	cp docker/start.sh tmp
+	cp docker/rewrite.config tmp
+	cp docker/context.xml tmp
 	cp build/libs/guacamole-auth-cognito-*-all.jar tmp
 	cp src/main/resources/guac-manifest.json tmp
 	docker build -t dwpdigital/cognito-guacamole-extension ./tmp
