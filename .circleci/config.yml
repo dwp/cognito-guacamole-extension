@@ -49,6 +49,7 @@
               LATEST_VERSION=$(curl --silent "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases/latest" | grep '"tag_name":' | sed -E -e 's/.*": "([^"]+)".*/\1/' || true)
               [ -z "$LATEST_VERSION" ] && LATEST_VERSION="0.0.0"
               VERSION=$(echo $LATEST_VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+              chmod +x gradlew
               ./gradlew build shadow
         - save_cache:
             paths:
