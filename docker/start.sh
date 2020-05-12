@@ -682,7 +682,7 @@ if [ -n "$OPENID_AUTHORIZATION_ENDPOINT" ]; then
     INSTALLED_AUTH="$INSTALLED_AUTH openid"
 fi
 
-if [ -n "$KEYSTORE_URL" ]; then
+if [ -n "$KEYSTORE_URL" -o -n "$KEYSTORE_DATA" ]; then
     INSTALLED_AUTH="$INSTALLED_AUTH cognito"
 
     if [ -z "$KEYSTORE_URL" ]        || \
