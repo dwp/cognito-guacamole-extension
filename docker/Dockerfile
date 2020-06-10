@@ -14,7 +14,9 @@ RUN git clone --single-branch --branch staging/1.2.0 https://github.com/apache/g
     mkdir -p "$BUILD_DIR" && \
     mkdir -p /opt/guacamole/bin/ && \
     cp -r /tmp/guacclient/guacamole-docker/bin/* /opt/guacamole/bin/ && \
-    mv /tmp/guacclient/* "$BUILD_DIR"
+    mv /tmp/guacclient/* "$BUILD_DIR" && \
+    apt-get remove -y git && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN /opt/guacamole/bin/build-guacamole.sh "$BUILD_DIR" /opt/guacamole "$BUILD_PROFILE"
 
