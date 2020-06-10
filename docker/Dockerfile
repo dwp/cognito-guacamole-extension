@@ -1,4 +1,28 @@
-FROM guacamole/guacamole:1.1.0
+ARG TOMCAT_VERSION=8.5
+ARG TOMCAT_JRE=jre8
+
+FROM maven:3-jdk-8 AS builder
+
+ARG BUILD_PROFILE
+
+ENV \
+    BUILD_DIR=/tmp/guacamole-docker-BUILD
+
+RUN apt-get update && apt-get install -y git
+
+RUN git clone --single-branch --branch staging/1.2.0 https://github.com/apache/guacamole-client.git /tmp/guacclient/ && \
+    mkdir -p "$BUILD_DIR" && \
+    mkdir -p /opt/guacamole/bin/ && \
+    cp -r /tmp/guacclient/guacamole-docker/bin/* /opt/guacamole/bin/ && \
+    mv /tmp/guacclient/* "$BUILD_DIR"
+
+RUN /opt/guacamole/bin/build-guacamole.sh "$BUILD_DIR" /opt/guacamole "$BUILD_PROFILE"
+
+FROM tomcat:${TOMCAT_VERSION}-${TOMCAT_JRE}
+
+WORKDIR /opt/guacamole
+
+COPY --from=builder /opt/guacamole/ .
 
 EXPOSE 8443
 
