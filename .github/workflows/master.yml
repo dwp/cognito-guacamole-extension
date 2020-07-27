@@ -16,9 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: build-docker-image
-        run: |
-          ./gradlew clean build
-          docker build -t ${{ env.IMAGE_NAME }}:latest ./docker
+        run: make docker
 
       - name: notify-slack
         uses: 8398a7/action-slack@v3
@@ -95,4 +93,4 @@ jobs:
         with:
           command: monitor
           image: ${{ env.IMAGE_NAME }}
-          args: --file=Dockerfile --org=dwp-dataworks
+          args: --file=./docker/Dockerfile --org=dwp-dataworks
