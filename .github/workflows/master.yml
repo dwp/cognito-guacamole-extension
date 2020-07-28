@@ -28,6 +28,13 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
         if: ${{ failure() }}
 
+      - name: upload-jar-artifact
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: libs
+          path: build/libs/*.jar
+
   get-publish-version:
     runs-on: ubuntu-latest
     outputs:
@@ -66,6 +73,17 @@ jobs:
     needs: publish-github-release
     steps:
       - uses: actions/checkout@v2
+
+      - name: download-jar-artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: libs
+
+      - name: move-file-for-publish
+        run: |
+          mkdir -p build/libs
+          cp ${GITHUB_WORKSPACE}/*.jar build/libs/
+        if: ${{ success() }}
 
       - name: Get release version
         id: get_version
