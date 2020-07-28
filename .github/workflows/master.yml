@@ -79,6 +79,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           tags: "latest, ${{ needs.get-publish-version.outputs.publish-version }}"
           tag_semver: true
+          context: docker
 
   snyk-monitor:
     runs-on: ubuntu-latest
