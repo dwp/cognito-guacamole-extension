@@ -161,7 +161,11 @@ public class AuthenticationProviderService {
             }
         }
 
-        String username = Optional.ofNullable(claims.get("preferred_username")).orElse(claims.get("cognito:username")).orElse(claims.get("username")).asString();
+        String username = "";
+        if (claims.get("preferred_username")) { String preferred_username => username = preferred_username
+        } else {
+            String username = Optional.ofNullable(claims.get("cognito:username")).orElse(claims.get("username")).asString();
+        }
 
         if (!username.equals(clientUsername)) {
             logger.warn("Cognito user {} tried to access desktop for {}", username, clientUsername);
