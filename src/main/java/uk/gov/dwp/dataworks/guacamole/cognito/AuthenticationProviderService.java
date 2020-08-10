@@ -162,7 +162,8 @@ public class AuthenticationProviderService {
         }
 
         String username = "";
-        if (claims.get("preferred_username")) { String preferred_username => username = preferred_username;
+        if (claims.get("preferred_username")) {
+            username = claims.get("preferred_username");
         } else {
             username = Optional.ofNullable(claims.get("cognito:username")).orElse(claims.get("username")).asString();
         }
