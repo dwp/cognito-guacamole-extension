@@ -84,6 +84,11 @@ set_optional_property() {
 
 }
 
+
+# Set session timeout to 24hrs to outlast container lifetime
+set_property "api-session-timeout" 1440
+
+
 # Print error message regarding missing required variables for MySQL authentication
 mysql_missing_vars() {
    cat <<END
