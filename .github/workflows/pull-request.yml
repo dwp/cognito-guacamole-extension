@@ -25,4 +25,3 @@ jobs:
         with:
           image: ${{ env.IMAGE_NAME }}
           args: --file=./docker/Dockerfile --policy-path=./.snyk --severity-threshold=high --exclude-base-image-vulns --org=dwp-dataworks
-

@@ -28,12 +28,14 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
         if: ${{ failure() }}
 
-      - name: upload-jar-artifact
+      - name: upload-jar-and-guac-artifact
         if: ${{ success() }}
         uses: actions/upload-artifact@v2
         with:
-          name: libs
-          path: build/libs/*.jar
+          name: build-artifacts
+          path: |
+            build/libs/*.jar
+            build/resources/main/*.json
 
   get-publish-version:
     runs-on: ubuntu-latest
@@ -77,12 +79,12 @@ jobs:
       - name: download-jar-artifact
         uses: actions/download-artifact@v2
         with:
-          name: libs
+          name: build-artifacts
 
-      - name: move-file-for-publish
+      - name: move-files-for-publish
         run: |
-          mkdir -p build/libs
-          cp ${GITHUB_WORKSPACE}/*.jar build/libs/
+          cp ${GITHUB_WORKSPACE}/libs/*.jar ./docker
+          cp ${GITHUB_WORKSPACE}/resources/main/*.json ./docker
         if: ${{ success() }}
 
       - name: Get release version
