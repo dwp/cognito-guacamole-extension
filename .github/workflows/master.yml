@@ -32,7 +32,7 @@ jobs:
         if: ${{ success() }}
         uses: actions/upload-artifact@v2
         with:
-          name: libs
+          name: build-artifacts
           path: |
             build/libs/*.jar
             build/resources/main/*.json
@@ -79,17 +79,12 @@ jobs:
       - name: download-jar-artifact
         uses: actions/download-artifact@v2
         with:
-          name: libs
-
-      - name: download-guac-artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: guac
+          name: build-artifacts
 
       - name: move-files-for-publish
         run: |
-          cp ${GITHUB_WORKSPACE}/*.jar .
-          cp ${GITHUB_WORKSPACE}/*.json .
+          cp ${GITHUB_WORKSPACE}/libs/*.jar ./docker
+          cp ${GITHUB_WORKSPACE}/resources/main/*.json ./docker
         if: ${{ success() }}
 
       - name: Get release version
