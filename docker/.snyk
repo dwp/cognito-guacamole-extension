@@ -1,0 +1,44 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.13.5
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-DEBIAN9-UTILLINUX-285822:
+    - '*':
+        reason: introduced by base image - no fix currently available - allows local users to escape to the parent session, no local users on guacamole instances
+        expires: 2020-16-12T00:00:00.000Z
+   SNYK-DEBIAN9-SQLITE3-348055:
+    - '*':
+        reason: introduced by base image - no fix currently available - Affected function is not used in Debian and meant for debugging purposes
+        expires: 2020-16-12T00:00:00.000Z
+   SNYK-DEBIAN9-SQLITE3-570722:
+    - '*':
+        reason: introduced by base image - no fix currently available - bug found in SQLite3 by apple but no current evidence it effects Debian
+        expires: 2020-16-12T00:00:00.000Z
+   SNYK-DEBIAN9-SHADOW-306269:
+    - '*':
+        reason: introduced by base image - no fix currently available - fix is currently in shadow@1:4.5-1 (unstable version)
+        expires: 2020-16-12T00:00:00.000Z
+   SNYK-DEBIAN9-LIBPNG16-452465:
+    - '*':
+        reason: introduced by base image - no fix currently available - fix is currently in libpng1.6@1.6.32-1 (unstable version)
+        expires: 2020-16-12T00:00:00.000Z
+   SNYK-DEBIAN9-GNUTLS28-609780:
+    - '*':
+        reason: introduced by base image - no fix currently available
+        expires: 2020-16-12T00:00:00.000Z
+   SNYK-DEBIAN9-GLIBC-338164:
+    - '*':
+        reason: introduced by base image - no fix currently available - fix is currently in glibc@2.28-9 (unstable version)
+        expires: 2020-16-12T00:00:00.000Z
+   SNYK-DEBIAN9-GLIBC-356602:
+    - '*':
+        reason: introduced by base image - no fix currently available - fix is currently in glibc@2.27-1 (unstable version)
+        expires: 2020-16-12T00:00:00.000Z
+   SNYK-DEBIAN9-GLIBC-356851:
+    - '*':
+        reason: introduced by base image - no fix currently available - fix is currently in glibc@2.26-4 (unstable version)
+        expires: 2020-16-12T00:00:00.000Z
+   SNYK-DEBIAN9-BZIP2-450801:
+    - '*':
+        reason: introduced by base image - no fix currently available - introduced by bzip2, using latest available version
+        expires: 2020-16-12T00:00:00.000Z

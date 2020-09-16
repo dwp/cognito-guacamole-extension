@@ -12,5 +12,6 @@ COPY rewrite.config /usr/local/tomcat/webapps/ROOT/WEB-INF/
 
 RUN  chmod 755 /opt/guacamole/bin/start.sh
 RUN  chmod 755 /entrypoint.sh
+RUN  apt-get update && apt-get -y upgrade
 
 ENTRYPOINT ["/entrypoint.sh"]
