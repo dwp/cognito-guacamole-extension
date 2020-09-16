@@ -9,34 +9,6 @@ env:
   IMAGE_NAME: dwpdigital/cognito-guacamole-extension
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-
-      - name: build-docker-image
-        run: make docker
-
-      - name: notify-slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,commit,author,workflow
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-        if: ${{ failure() }}
-
-      - name: upload-jar-and-guac-artifact
-        if: ${{ success() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-artifacts
-          path: |
-            build/libs/*.jar
-            build/resources/main/*.json
-
   get-publish-version:
     runs-on: ubuntu-latest
     outputs:
@@ -52,9 +24,7 @@ jobs:
 
   publish-github-release:
     runs-on: ubuntu-latest
-    needs:
-      - get-publish-version
-      - build
+    needs: get-publish-version
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -78,20 +48,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: download-jar-artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: build-artifacts
-
-      - name: move-files-for-publish
-        run: |
-          cp ${GITHUB_WORKSPACE}/libs/*.jar ./docker
-          cp ${GITHUB_WORKSPACE}/resources/main/*.json ./docker
-        if: ${{ success() }}
-
       - name: Get release version
         id: get_version
         run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
+
+      - name: Build
+        run: |
+          ./gradlew build shadow
+          cp build/libs/guacamole-auth-cognito-*-all.jar ./docker
+          cp src/main/resources/guac-manifest.json ./docker
 
       - name: Publish to DockerHub
         uses: elgohr/Publish-Docker-Github-Action@master
@@ -102,6 +67,16 @@ jobs:
           tags: "latest, ${{ needs.get-publish-version.outputs.publish-version }}"
           tag_semver: true
           context: docker
+
+      - name: notify-slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,commit,author,workflow
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        if: ${{ failure() }}
 
   snyk-monitor:
     runs-on: ubuntu-latest
