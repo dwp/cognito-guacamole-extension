@@ -710,6 +710,10 @@ if [ -n "$KEYSTORE_URL" -o -n "$KEYSTORE_DATA" ]; then
     set_property "validate-issuer"    "$VALIDATE_ISSUER"
     set_property "client-params"      "$CLIENT_PARAMS"
     set_property "client-username"    "$CLIENT_USERNAME"
+    if [ ! -z "$SFTP_PRIVATE_KEY_B64" ]; then
+      set_property "sftp-private-key-b64" "$SFTP_PRIVATE_KEY_B64"
+    fi
+
     ln -s /etc/guacamole/extensions/guacamole-auth-*.jar "$GUACAMOLE_EXT"
     ln -s /etc/guacamole/extensions/guac-manifest.json   "$GUACAMOLE_EXT"
 fi
