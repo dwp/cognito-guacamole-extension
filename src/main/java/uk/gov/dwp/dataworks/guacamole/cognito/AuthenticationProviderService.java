@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -62,22 +63,31 @@ public class AuthenticationProviderService {
         }
     };
 
+    static final StringGuacamoleProperty SFTP_PRIVATE_KEY_B64 = new StringGuacamoleProperty() {
+        @Override
+        public String getName() {
+            return "sftp-private-key-b64";
+        }
+    };
+
     private String keystoreUrl;
     private Boolean validateIssuer;
     private String clientUsername;
     private String clientParams;
     private String issuer;
+    private String sftpPrivateKeyB64;
 
     private JwkProvider cognito;
 
     @Inject
-    public AuthenticationProviderService(Environment environment) throws GuacamoleException, MalformedURLException, SigningKeyNotFoundException {
+    public AuthenticationProviderService(Environment environment) throws GuacamoleException, MalformedURLException {
 
         keystoreUrl = environment.getRequiredProperty(KEYSTORE_URL);
         validateIssuer = environment.getRequiredProperty(VALIDATE_ISSUER);
         clientParams = environment.getRequiredProperty(CLIENT_PARAMS);
         clientUsername = environment.getRequiredProperty(CLIENT_USERNAME);
         issuer = environment.getRequiredProperty(ISSUER);
+        sftpPrivateKeyB64 = environment.getRequiredProperty(SFTP_PRIVATE_KEY_B64);
 
         logger.info("Reading keystore from {}", keystoreUrl);
         JwkProvider provider = new UrlJwkProvider( new URL(keystoreUrl));
@@ -159,6 +169,12 @@ public class AuthenticationProviderService {
                     config.setParameter(parts[0], parts[1]);
                 }
             }
+        }
+
+        if (sftpPrivateKeyB64 != null) {
+            String decodedKey = new String(Base64.getDecoder().decode(sftpPrivateKeyB64));
+            logger.info("Setting SFTP private key");
+            config.setParameter("sftp-private-key", decodedKey);
         }
 
         String username = Optional.ofNullable(claims.get("preferred_username"))
