@@ -9,9 +9,13 @@ passed in as a base64 encoded string.
 
 # Container environment variables
 
-KEYSTORE_URL    :- The Cognito keystore URL.
-KEYSTORE_DATA   :- The base64 encoding of the above URL's contents if there is no internet access.
-VALIDATE_ISSUER :- true/false. Whether to validate the issuer of the token (should be true for production).
-ISSUER          :- The issuer name to validate against.
-CLIENT_PARAMS   :- The connection parameters and VNC options.
-CLIENT_USERNAME :- The username this Guacamole instance is reserved for.
+| Variable | Description |
+|----------|-------------|
+KEYSTORE_URL    | The Cognito keystore URL.
+KEYSTORE_DATA   | The base64 encoding of the above URL's contents if there is no internet access.
+VALIDATE_ISSUER | true/false. Whether to validate the issuer of the token (should be true for production).
+ISSUER          | The issuer name to validate against.
+CLIENT_PARAMS   | The connection parameters and VNC options.
+CLIENT_USERNAME | The username this Guacamole instance is reserved for.
+
+The github action builds and pushes the image to dockerhub dwpdigital/cognito-guacamole-extension
