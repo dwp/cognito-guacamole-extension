@@ -1,3 +1,5 @@
+# DO NOT USE THIS REPO - MIGRATED TO GITLAB
+
 # cognito-guacamole-extension
 Integration between cognito and Apache Guacamole
 
